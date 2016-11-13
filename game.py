@@ -13,11 +13,17 @@ ROOM_MAX_SIZE = 10
 ROOM_MIN_SIZE = 6
 MAX_ROOMS = 30
 
+FOV_ALGO = 0
+FOV_LIGHT_WALLS = True
+TORCH_FADIUS = 10
+
 class GameTile:
 	def __init__(self, blocked, block_sight = None):
 		self.blocked = blocked
-		if block_sight is None: block_sight = blocked
+		if block_sight is None: 
+			block_sight = blocked
 		self.block_sight = block_sight
+		self.isExplored = False
 
 def make_map():
 	global map
@@ -103,42 +109,55 @@ class GameObject:
 			self.y += dy
 	def draw(self):
 		#libtcod.console_set_default_foreground(con, self.colour)
-		libtcod.console_put_char(0, self.x, self.y, self.char, libtcod.BKGND_NONE)
+		if libtcod.map_is_in_fov(fov_map, self.x, self.y):
+			libtcod.console_put_char(0, self.x, self.y, self.char, libtcod.BKGND_NONE)
 	def clear(self):
 		libtcod.console_put_char(0, self.x, self.y, '_', libtcod.BKGND_NONE)
 
 def handle_keys():
-	global player
+	global player, fov_recompute
 	
 	# make check pause gameplay, turn based!
 	key = libtcod.console_check_for_keypress()
 	
 	if key.vk == libtcod.KEY_ESCAPE:
 		return true
-	
 	if libtcod.console_is_key_pressed(libtcod.KEY_UP):
 		player.move(0, -1)
+		fov_recompute = True		
 	elif libtcod.console_is_key_pressed(libtcod.KEY_DOWN):
 		player.move(0, 1)
+		fov_recompute = True
 	elif libtcod.console_is_key_pressed(libtcod.KEY_LEFT):
 		player.move(-1, 0)
+		fov_recompute = True
 	elif libtcod.console_is_key_pressed(libtcod.KEY_RIGHT):
 		player.move(1, 0)
+		fov_recompute = True
 
 def render_all():
-	global map, gameObjects
-
-	for object in gameObjects:
-		object.draw()
+	global map, gameObjects, fov_map, fov_recompute
+	
+	if fov_recompute:
+		libtcod.map_compute_fov(fov_map, player.x, player.y, TORCH_FADIUS, FOV_LIGHT_WALLS, FOV_ALGO)
+		fov_recompute = False
 	
 	for y in range(MAP_HEIGHT):
 		for x in range(MAP_WIDTH):
+			visible = libtcod.map_is_in_fov(fov_map, x, y)
 			isWall = map[x][y].block_sight
-			if isWall:
-				libtcod.console_put_char(0, x, y, '#', libtcod.BKGND_NONE)
+			if not visible:
+				if map[x][y].isExplored:
+					if isWall:
+						libtcod.console_put_char(0, x, y, '"', libtcod.BKGND_NONE)
+					else:
+						libtcod.console_put_char(0, x, y, '.', libtcod.BKGND_NONE)
 			else:
-				libtcod.console_put_char(0, x, y, '.', libtcod.BKGND_NONE)
-	
+				if isWall:
+					libtcod.console_put_char(0, x, y, '#', libtcod.BKGND_NONE)
+				else:
+					libtcod.console_put_char(0, x, y, ',', libtcod.BKGND_NONE)
+				map[x][y].isExplored = True
 	for object in gameObjects:
 		object.draw()
 	
@@ -156,6 +175,12 @@ npc = GameObject(SCREEN_WIDTH/2-5, SCREEN_HEIGHT/2, 'A', libtcod.yellow)
 gameObjects = [npc, player]
 
 make_map()
+fov_map = libtcod.map_new(MAP_WIDTH, MAP_HEIGHT)
+for y in range(MAP_HEIGHT):
+	for x in range(MAP_WIDTH):
+		libtcod.map_set_properties(fov_map, x, y, not map[x][y].block_sight, not map[x][y].blocked)
+		
+fov_recompute = True
 		
 while not libtcod.console_is_window_closed():
 	render_all()
