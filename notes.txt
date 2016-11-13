@@ -1,0 +1,6 @@
+default 13 colour set:
+white, black, red, green, blue
+yellow, orange, cyan, magenta, brown
+purple, grey, pink
+
+issues with colour in 64-bit python might be fixed by getting BigNum.py
