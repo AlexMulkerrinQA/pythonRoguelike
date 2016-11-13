@@ -13,7 +13,7 @@ MAX_ROOM_MONSTERS = 3
 
 FOV_ALGO = 0
 FOV_LIGHT_WALLS = True
-TORCH_FADIUS = 10
+VISION_RADIUS = 10
 # class and function definitions
 class GameTile:
 	def __init__(self, blocked, block_sight = None):
@@ -242,7 +242,7 @@ def render_all():
 	global map, gameObjects, fov_map, fov_recompute
 	
 	if fov_recompute:
-		libtcod.map_compute_fov(fov_map, player.x, player.y, TORCH_FADIUS, FOV_LIGHT_WALLS, FOV_ALGO)
+		libtcod.map_compute_fov(fov_map, player.x, player.y, VISION_RADIUS, FOV_LIGHT_WALLS, FOV_ALGO)
 		fov_recompute = False
 	
 	for y in range(MAP_HEIGHT):
