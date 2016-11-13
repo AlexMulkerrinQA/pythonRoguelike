@@ -6,3 +6,4 @@ purple, grey, pink
 issues with colour in 64-bit python might be fixed by getting BigNum.py
 
 add a lightcone to direction travelling
+is it the case that globals in Python can be referenced anywhere but only changed if explicitely assigned in a function?
