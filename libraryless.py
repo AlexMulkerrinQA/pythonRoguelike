@@ -46,7 +46,7 @@ def setBgColour(colour):
 def echon(text):
 	call(['echo', '-n', text])
 def setCursor(x, y):
-	call(['echo','-en','\e['+str(x)+';'+str(y)+'H'])
+	call(['echo','-en','\e['+str(x-1)+';'+str(y-1)+'H'])
 
 # Game classes and functions
 class GameTile:
