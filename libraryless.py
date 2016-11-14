@@ -138,6 +138,7 @@ class Object:
 		self.y = y
 
 def renderMap():
+	print ""
 	global map
 	setCursor(3,3)
 	for y in range(MAP_HEIGHT):
