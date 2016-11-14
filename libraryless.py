@@ -91,7 +91,7 @@ def make_map():
 					create_vert_tunnel(prev_y, new_y, new_x)
 					create_horiz_tunnel(prev_x, new_x, prev_y)
 					
-			place_objects(new_room)
+			#place_objects(new_room)
 			rooms.append(new_room)
 			num_rooms += 1		
 class MapRect:
