@@ -136,6 +136,10 @@ class Object:
 	def __init__(self,x,y):
 		self.x = x
 		self.y = y
+	def move (self, dx, dy):
+		if not is_blocked(self.x + dx, self.y + dy):
+			self.x += dx
+			self.y += dy
 
 def renderMap():
 	global map
