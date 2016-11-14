@@ -84,7 +84,7 @@ def make_map():
 				player.y = new_y
 			else:
 				(prev_x, prev_y) = rooms[num_rooms-1].center()
-				if libtcod.random_get_int(0, 0, 1) == 1:
+				if random.randint(0, 1) == 1:
 					create_horiz_tunnel(prev_x, new_x, prev_y)
 					create_vert_tunnel(prev_y, new_y, new_x)
 				else:
