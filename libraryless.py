@@ -64,6 +64,8 @@ for i in range(int(termY)):
 
 player = Object(20, 20)
 action = None
+oldx = player.x
+oldy = player.y
 while action != 'quit':	
 	setCursor(oldy, oldx)
 	setBgColour('black')
