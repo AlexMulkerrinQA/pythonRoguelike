@@ -138,9 +138,8 @@ class Object:
 		self.y = y
 
 def renderMap():
-	print ""
 	global map
-	setCursor(3,3)
+	#setCursor(0,0)
 	for y in range(MAP_HEIGHT):
 		for x in range(MAP_WIDTH):
 			isWall = map[x][y].blocked
