@@ -49,7 +49,7 @@ def setCursor(x, y):
 	call(['echo','-en','\e['+str(x)+';'+str(y)+'H'])
 
 # Game classes and functions
-class MapTile:
+class GameTile:
 	def __init__(self, blocked, blocks_sight = None):
 		self.blocked = blocked
 		if blocks_sight is None:
