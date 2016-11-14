@@ -1,12 +1,19 @@
 import libtcodpy as libtcod
-import math
+import math, textwrap
 # constants
 SCREEN_WIDTH, SCREEN_HEIGHT = 80, 50
 LIMIT_FPS = 20
 DEBUG_MODE = False
 
+BAR_WIDTH = 20
+PANEL_HEIGHT = 7
+PANEL_Y = SCREEN_HEIGHT - PANEL_HEIGHT
+MSG_X = BAR_WIDTH + 2
+MSG_WIDTH = SCREEN_WIDTH - BAR_WIDTH - 2
+MSG_HEIGHT = PANEL_HEIGHT - 1
+
 map = []
-MAP_WIDTH, MAP_HEIGHT = 80, 45
+MAP_WIDTH, MAP_HEIGHT = 80, 43
 ROOM_MAX_SIZE, ROOM_MIN_SIZE = 10, 6
 MAX_ROOMS = 30
 MAX_ROOM_MONSTERS = 3
@@ -14,6 +21,13 @@ MAX_ROOM_MONSTERS = 3
 FOV_ALGO = 0
 FOV_LIGHT_WALLS = True
 VISION_RADIUS = 10
+
+#colours = {'red':'\e[48;5;1m', 
+#	black, red, green, brown, blue, purple, dcyan, grey, dgrey, bred, bgreen, byellow, bblue, pink,cyan, white
+#}
+class Colour:
+	black, red, green, brown, blue, purple, dcyan, grey, dgrey, bred, bgreen, byellow, bblue, pink, cyan, white = range(16)
+	
 # class and function definitions
 class GameTile:
 	def __init__(self, blocked, block_sight = None):
@@ -151,22 +165,22 @@ class Fighter:
 	def take_damage(self, damage):
 		if damage > 0:
 			self.hp -= damage
-	def attack(self, target):
-		damage = self.power - target.fighter.defense
-		if damage > 0:
-			print self.owner.name.capitalize() + ' attacks ' + target.name + ' for ' + str(damage) + ' hit points.'
-			target.fighter.take_damage(damage)
 			if self.hp <= 0:
 				func = self.death_function
 				if func is not None:
 					func(self.owner)
+	def attack(self, target):
+		damage = self.power - target.fighter.defense
+		if damage > 0:
+			message(self.owner.name.capitalize() + ' attacks ' + target.name + ' for ' + str(damage) + ' hit points.')
+			target.fighter.take_damage(damage)
 		else:
-			print self.owner.name.capitalize() + ' attacks ' + target.name + ' but it has no effect!'
+			message(self.owner.name.capitalize() + ' attacks ' + target.name + ' but it has no effect!')
 class BasicMonster:
 	def take_turn(self):
 		monster = self.owner
 		if libtcod.map_is_in_fov(fov_map, monster.x, monster.y):
-			print 'The ' + self.owner.name + ' growls!'
+			message('The ' + self.owner.name + ' growls!', libtcod.yellow)
 			if monster.distance_to(player) >= 2:
 				monster.move_towards(player.x, player.y)
 			elif player.fighter.hp > 0:
@@ -205,11 +219,11 @@ def player_move_or_attack(dx, dy):
 		fov_recompute = True
 def player_death(player):
 	global game_state
-	print 'You died!'
+	message('You died!', libtcod.red)
 	game_state = 'dead'
 	player.char = '%'
 def monster_death(monster):
-	print monster.name.capitalize() + ' is dead!'
+	message(monster.name.capitalize() + ' is dead!', libtcod.green)
 	monster.char = '%'
 	monster.blocks = False
 	monster.fighter = None
@@ -237,7 +251,13 @@ def handle_keys():
 			player_move_or_attack(1, 0)
 		else:
 			return 'didnt-take-turn'
-
+def message(new_msg, colour = libtcod.white):
+	new_msg_lines = textwrap.wrap(new_msg, MSG_WIDTH)
+	for line in new_msg_lines:
+		if len(game_msgs) == MSG_HEIGHT:
+			del game_msgs[0]
+		game_msgs.append( (line, colour) )
+			
 def render_all():
 	global map, gameObjects, fov_map, fov_recompute
 	
@@ -265,15 +285,29 @@ def render_all():
 		object.draw()
 	player.draw()
 	
-	libtcod.console_print_ex(0, 1, SCREEN_HEIGHT - 2, libtcod.BKGND_NONE, libtcod.LEFT, 'HP: ' + str(player.fighter.hp) + '/' + str(player.fighter.max_hp)+ " ")
+	y = 1
+	for (line, colour) in game_msgs:
+		libtcod.console_print_ex(0, MSG_X, y, libtcod.BKGND_NONE, libtcod.LEFT, line)
+		y += 1
+	#libtcod.console_print_ex(0, 1, SCREEN_HEIGHT - 2, libtcod.BKGND_NONE, libtcod.LEFT, 'HP: ' + str(player.fighter.hp) + '/' + str(player.fighter.max_hp)+ " ")
+	render_bar(1, 1, BAR_WIDTH, 'HP', player.fighter.hp, player.fighter.max_hp, libtcod.light_red, libtcod.darker_red)
 	
 	#libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
 	libtcod.console_flush()	
+def render_bar(x, y, total_width, name, value, maximum, bar_colour, back_colour):
+	bar_width = int(float(value) / maximum * total_width)
+	#libtcod.console_rect(0, x, y, total_width, 1, False, libtcod.BKGND_SCREEN)
+	if bar_width > 0:
+		#libtcod.console_rect(0, x, y, bar_width, 1, False, libtcod.BKGND_SCREEN)
+		libtcod.console_print_ex(0, x + total_width/2, y, libtcod.BKGND_NONE, libtcod.CENTER, name + ': ' + str(value) + '/' + str(maximum))
 #----- Main program entrypoint -----#
 libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
 libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Python Roguelike', False)
 con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 libtcod.sys_set_fps(LIMIT_FPS)
+
+game_msgs = []
+message('Welcome adventurer! Prepare to perish in the lair of the Iron Scorpion.', libtcod.red)
 
 game_state ='playing'
 player_action = None
