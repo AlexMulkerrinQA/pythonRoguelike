@@ -203,7 +203,7 @@ while action != 'quit':
 	if command == 'q':
 		action = 'quit' 
 
-setCursor(termX,termY)
+setCursor(int(termX),int(termY))
 setBgColour('black')
 setFgColour('white')
 call(['setterm', '--cursor','on'])
