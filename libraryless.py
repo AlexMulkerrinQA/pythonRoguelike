@@ -133,9 +133,10 @@ def is_blocked(x, y):
 	return False
 			
 class Object:
-	def __init__(self,x,y):
+	def __init__(self,x,y, blocks=False):
 		self.x = x
 		self.y = y
+		self.blocks = blocks
 	def move (self, dx, dy):
 		if not is_blocked(self.x + dx, self.y + dy):
 			self.x += dx
