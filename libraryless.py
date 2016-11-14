@@ -142,7 +142,7 @@ def renderMap():
 	setCursor(3,3)
 	for y in range(MAP_HEIGHT):
 		for x in range(MAP_WIDTH):
-			isWall = map[x][y].blocks_sight
+			isWall = map[x][y].blocked
 			if isWall:
 				setBgColour('blue')
 				echon(' ')
