@@ -30,13 +30,13 @@ def handleKeys():
 	if command == 'q':
 		action = 'quit'
 	elif command == 'w':
-		player.y -= 1
+		player.move(0, -1)
 	elif command == 'a':
-		player.x -= 1
+		player.move(-1, 0)
 	elif command == 's':
-		player.y += 1
+		player.move(0, 1)
 	elif command == 'd':
-		player.x += 1
+		player.move(1, 0)
 	return command
 	
 def setFgColour(colour):
