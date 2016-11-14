@@ -28,6 +28,11 @@ VISION_RADIUS = 10
 class Colour:
 	black, red, green, brown, blue, purple, dcyan, grey, dgrey, bred, bgreen, byellow, bblue, pink, cyan, white = range(16)
 	
+	
+colour_dark_wall = libtcod.Color(0, 0, 100)
+colour_light_wall = libtcod.Color(100, 110, 150)
+colour_dark_ground = libtcod.Color(50, 50, 150)
+colour_light_ground = libtcod.Color(200, 180, 200)
 # class and function definitions
 class GameTile:
 	def __init__(self, blocked, block_sight = None):
@@ -146,8 +151,8 @@ class GameObject:
 		dy = other.y - self.y
 		return math.sqrt(dx**2 + dy**2)
 	def draw(self):
-		#libtcod.console_set_default_foreground(con, self.colour)
 		if libtcod.map_is_in_fov(fov_map, self.x, self.y):
+			libtcod.console_set_default_foreground(0, self.colour)
 			libtcod.console_put_char(0, self.x, self.y, self.char, libtcod.BKGND_NONE)
 	def clear(self):
 		libtcod.console_put_char(0, self.x, self.y, '_', libtcod.BKGND_NONE)
@@ -264,7 +269,7 @@ def render_all():
 	if fov_recompute:
 		libtcod.map_compute_fov(fov_map, player.x, player.y, VISION_RADIUS, FOV_LIGHT_WALLS, FOV_ALGO)
 		fov_recompute = False
-	
+	libtcod.console_set_default_foreground(0, libtcod.white)
 	for y in range(MAP_HEIGHT):
 		for x in range(MAP_WIDTH):
 			visible = libtcod.map_is_in_fov(fov_map, x, y)
@@ -272,14 +277,19 @@ def render_all():
 			if not visible:
 				if map[x][y].isExplored:
 					if isWall:
+						libtcod.console_set_char_background(0, x, y, colour_dark_wall, libtcod.BKGND_SET)
+
 						libtcod.console_put_char(0, x, y, '"', libtcod.BKGND_NONE)
 					else:
+						libtcod.console_set_char_background(0, x, y, colour_dark_ground, libtcod.BKGND_SET)
 						libtcod.console_put_char(0, x, y, '.', libtcod.BKGND_NONE)
 			else:
 				if isWall:
-					libtcod.console_put_char(0, x, y, '#', libtcod.BKGND_NONE)
+					libtcod.console_set_char_background(0, x, y, colour_light_wall, libtcod.BKGND_SET)
+					libtcod.console_put_char(0, x, y, '"', libtcod.BKGND_NONE)
 				else:
-					libtcod.console_put_char(0, x, y, ',', libtcod.BKGND_NONE)
+					libtcod.console_set_char_background(0, x, y, colour_light_ground, libtcod.BKGND_SET)
+					libtcod.console_put_char(0, x, y, '.', libtcod.BKGND_NONE)
 				map[x][y].isExplored = True
 	for object in gameObjects:
 		object.draw()
@@ -312,7 +322,7 @@ message('Welcome adventurer! Prepare to perish in the lair of the Iron Scorpion.
 game_state ='playing'
 player_action = None
 fighter_component = Fighter(hp=30, defense=2, power=5, death_function=player_death)
-player = GameObject(0, 0, '@', 'adventurer', libtcod.white, blocks=True, fighter=fighter_component)
+player = GameObject(0, 0, '@', 'adventurer', libtcod.yellow, blocks=True, fighter=fighter_component)
 gameObjects = [player]
 make_map()
 fov_map = libtcod.map_new(MAP_WIDTH, MAP_HEIGHT)
