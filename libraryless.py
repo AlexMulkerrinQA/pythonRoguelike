@@ -201,4 +201,5 @@ while action != 'quit':
 setCursor(termX,termY)
 setBgColour('black')
 setFgColour('white')
+call(['setterm', '--cursor','on'])
 print ''
