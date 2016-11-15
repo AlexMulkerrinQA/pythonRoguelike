@@ -46,15 +46,22 @@ class Render:
 		echon('@')
 	
 	def renderMap(self):
+		wasWall = False
+		length = 1
 		for y in range(self.map.height):
 			for x in range(self.map.width):
 				isWall = self.map.tiles[x][y].blocked
-				if isWall:
-					setBgColour('blue')
-					echon(' ')
+				if isWall != wasWall:
+					if isWall:
+						setBgColour('blue')	
+						wasWall = True
+					else:
+						setBgColour('black')
+						wasWall = False
+					echon(' '*length)
+					length = 1
 				else:
-					setBgColour('black')
-					echon(' ')
+					length += 1
 	
 	def windowsRefresh(self):
 		output = ''
