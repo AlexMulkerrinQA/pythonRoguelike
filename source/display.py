@@ -3,9 +3,10 @@ import os
 from subprocess import call
 
 class Render:
-	self.needRedraw = False
+	
 	
 	def __init__(self, map, player):
+		self.needRedraw = False
 		self.map = map
 		self.player = player
 		if os.name == "posix":
