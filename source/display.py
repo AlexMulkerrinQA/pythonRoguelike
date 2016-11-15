@@ -62,6 +62,11 @@ class Render:
 					length = 1
 				else:
 					length += 1
+		# do last segment
+		if wasWall:
+			setBgColour('blue')	
+		else:
+			setBgColour('black')		
 		echon(' '*length)
 		
 	def windowsRefresh(self):
