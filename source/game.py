@@ -1,4 +1,5 @@
 import map
+from input import getChar
 
 def renderMap(map):
 	for y in range(map.height):
@@ -16,4 +17,6 @@ map = map.DungeonMap()
 renderMap(map)
 
 while True:
-        dummy = 1
+	command = getChar()
+	if command != None:
+		print command
