@@ -23,7 +23,7 @@ def handleKeys():
 # ----- Main Program Entrypoint ----- #
 if os.name == "posix":
 	termY, termX = subprocess.check_output(['stty', 'size']).split()
-	map = map.DungeonMap(int(termY), int(termX))
+	map = map.DungeonMap(int(termX), int(termY))
 else:
 	map = map.DungeonMap()
 (startX, startY) = map.rooms[0].center()
