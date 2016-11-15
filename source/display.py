@@ -22,7 +22,7 @@ class Render:
 	def linuxRefresh(self):
 		for y in range(self.map.height):
 			for x in range(self.map.width):
-				isWall = self.map[x][y].blocked
+				isWall = self.map.tiles[x][y].blocked
 				if isWall:
 					setBgColour('blue')
 					echon(' ')
