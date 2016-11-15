@@ -1,6 +1,7 @@
+# class to pick correct system calls to get single character input on Windows and Linux
+
 class _Getch:
-    """Gets a single character from standard input.  Does not echo to the
-screen."""
+    """Gets a single character from standard input.  Does not echo to the screen."""
     def __init__(self):
         try:
             self.impl = _GetchWindows()
@@ -8,7 +9,6 @@ screen."""
             self.impl = _GetchUnix()
 
     def __call__(self): return self.impl()
-
 
 class _GetchUnix:
     def __init__(self):
@@ -25,7 +25,6 @@ class _GetchUnix:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-
 class _GetchWindows:
     def __init__(self):
         import msvcrt
@@ -33,6 +32,5 @@ class _GetchWindows:
     def __call__(self):
         import msvcrt
         return msvcrt.getch()
-
 
 getChar = _Getch()

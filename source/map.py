@@ -2,7 +2,7 @@
 import random
 
 class DungeonMap:
-	def __init__(self, width = 80, height = 43):
+	def __init__(self, width = 80, height = 23):
 		self.width = width
 		self.height = height
 		self.make_map()
@@ -28,11 +28,7 @@ class DungeonMap:
 			if not failed:
 				self.create_room(new_room)
 				(new_x, new_y) = new_room.center()
-				if (num_rooms == 0):
-					dud = 0
-					#player.x = new_x
-					#player.y = new_y do this in player initialisation
-				else:
+				if num_rooms != 0:
 					(prev_x, prev_y) = self.rooms[num_rooms-1].center()
 					if random.randint(0, 1) == 1:
 						self.create_horiz_tunnel(prev_x, new_x, prev_y)
@@ -86,6 +82,4 @@ class GameTile:
 		if block_sight is None: 
 			block_sight = blocked
 		self.block_sight = block_sight
-		self.isExplored = False
-		
-#map = DungeonMap()
+		self.isExplored = False	
