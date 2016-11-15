@@ -10,6 +10,7 @@ class Render:
 		self.map = map
 		self.player = player
 		if os.name == "posix":
+			call(['setterm', '--cursor','off'])
 			self.needRedraw = True
 		else:
 			call(['Color','71'], shell=True)
@@ -19,6 +20,16 @@ class Render:
 			self.linuxRefresh()
 		else:
 			self.windowsRefresh()
+	
+	def cleanup(self):
+		if os.name == "posix":
+			setCursor(self.map.width, self.map.height)
+			setBgColour('black')
+			setFgColour('white')
+			call(['setterm', '--cursor','on'])
+			print ''
+		else:
+			call(['Color','0f'], shell=True)
 	
 	def linuxRefresh(self):
 		if self.needRedraw:

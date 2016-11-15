@@ -8,7 +8,7 @@ def handleKeys():
 	global player, map
 	command = getChar()
 	if command == 'q':
-		action = 'quit'
+		command = 'quit'
 	elif command == 'w':
 		player.move(map, 0, -1)
 	elif command == 'a':
@@ -30,6 +30,9 @@ gameObjects = [player]
 render = display.Render(map, player)
 render.refresh()
 
-while True:
-	handleKeys()
+action = None
+while action != 'quit':
+	action = handleKeys()
 	render.refresh()
+
+render.cleanup()

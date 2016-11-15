@@ -10,7 +10,7 @@ class Object:
 		self.blocks = blocks
 	def move (self, map, dx, dy):
 		if not map.is_blocked(self.x + dx, self.y + dy):
-			self.oldX = x
-			self.oldY = y
+			self.oldX = self.x
+			self.oldY = self.y
 			self.x += dx
 			self.y += dy
