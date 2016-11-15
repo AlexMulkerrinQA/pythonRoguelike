@@ -9,7 +9,7 @@ class Render:
 		self.map = map
 		self.player = player
 		if os.name == "posix":
-			dummy = 1
+			needRedraw = True
 		else:
 			call(['Color','71'], shell=True)
 	
@@ -22,6 +22,7 @@ class Render:
 	def linuxRefresh(self):
 		if needRedraw:
 			self.renderMap()
+			needRedraw = False
 		
 		setCursor(oldy, oldx)
 		setBgColour('black')
