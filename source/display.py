@@ -62,7 +62,8 @@ class Render:
 					length = 1
 				else:
 					length += 1
-	
+		echon(' '*length)
+		
 	def windowsRefresh(self):
 		output = ''
 		clean = call('cls', shell=True)
