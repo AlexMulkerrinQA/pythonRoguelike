@@ -20,6 +20,19 @@ class Render:
 			self.windowsRefresh()
 	
 	def linuxRefresh(self):
+		if needRedraw:
+			self.renderMap()
+		
+		setCursor(oldy, oldx)
+		setBgColour('black')
+		setFgColour('white')
+		echon('.')
+		setCursor(player.y,player.x)
+		setBgColour('black')
+		setFgColour('yellow')
+		echon('@')
+	
+	def renderMap(self):
 		for y in range(self.map.height):
 			for x in range(self.map.width):
 				isWall = self.map.tiles[x][y].blocked
