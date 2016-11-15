@@ -24,3 +24,8 @@ call(['echo','-e','\e[48;5;35mTesting\e[m'])
 
 tput cols
 tput lines
+
+silly to have so many situational actions on different keys, just use (e) and display action in UI
+
+create server with: 
+python -m SimpleHTTPServer 8000

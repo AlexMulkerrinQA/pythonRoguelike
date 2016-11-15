@@ -160,20 +160,6 @@ def renderObjects():
 # ----- Main Program Entrypoint ----- #
 
 call(['setterm', '--cursor','off'])
-
-# for i in range(int(termY)):
-	# if i != 0 and i != int(termY)-1:
-		# setBgColour('blue')
-		# echon(' ')
-		# setBgColour('black')
-		# echon(' '*(int(termX)-2))
-		# setBgColour('blue')
-		# echon(' ')
-	# else:
-		# setBgColour('blue')
-		# echon(' '*int(termX))
-	# setBgColour('black')
-
 player = Object(20, 20)
 gameObjects = [player]
 
