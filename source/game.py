@@ -1,4 +1,4 @@
-import map, display
+import os, map, display
 from object import Object
 from input import getChar
 from subprocess import call
@@ -21,8 +21,11 @@ def handleKeys():
 
 
 # ----- Main Program Entrypoint ----- #
-
-map = map.DungeonMap()
+if os.name == "posix":
+	termY, termX = subprocess.check_output(['stty', 'size']).split()
+	map = map.DungeonMap(termY, termX)
+else:
+	map = map.DungeonMap()
 (startX, startY) = map.rooms[0].center()
 player = Object(startX, startY)
 gameObjects = [player]
