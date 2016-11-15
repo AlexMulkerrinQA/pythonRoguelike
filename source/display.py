@@ -3,7 +3,7 @@ import os
 from subprocess import call
 
 class Render:
-	
+	needRedraw = False
 	
 	def __init__(self, map, player):
 		self.map = map
