@@ -51,13 +51,13 @@ class Render:
 		for y in range(self.map.height):
 			for x in range(self.map.width):
 				isWall = self.map.tiles[x][y].blocked
-				if isWall == wasWall:
-					if isWall:
+				if isWall != wasWall:
+					if wasWall:
 						setBgColour('blue')	
-						wasWall = True
+						wasWall = False
 					else:
 						setBgColour('black')
-						wasWall = False
+						wasWall = True
 					echon(' '*length)
 					length = 1
 				else:
