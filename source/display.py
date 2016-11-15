@@ -51,7 +51,7 @@ class Render:
 		for y in range(self.map.height):
 			for x in range(self.map.width):
 				isWall = self.map.tiles[x][y].blocked
-				if isWall != wasWall:
+				if isWall == wasWall:
 					if isWall:
 						setBgColour('blue')	
 						wasWall = True
