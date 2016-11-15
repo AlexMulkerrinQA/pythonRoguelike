@@ -3,13 +3,13 @@ import os
 from subprocess import call
 
 class Render:
-	needRedraw = False
+	self.needRedraw = False
 	
 	def __init__(self, map, player):
 		self.map = map
 		self.player = player
 		if os.name == "posix":
-			needRedraw = True
+			self.needRedraw = True
 		else:
 			call(['Color','71'], shell=True)
 	
@@ -20,9 +20,9 @@ class Render:
 			self.windowsRefresh()
 	
 	def linuxRefresh(self):
-		if needRedraw:
+		if self.needRedraw:
 			self.renderMap()
-			needRedraw = False
+			self.needRedraw = False
 		
 		setCursor(oldy, oldx)
 		setBgColour('black')
