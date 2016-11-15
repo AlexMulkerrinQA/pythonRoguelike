@@ -1,4 +1,4 @@
-import os, map, display
+import os, subprocess, map, display
 from object import Object
 from input import getChar
 from subprocess import call
