@@ -46,8 +46,8 @@ class Render:
 		echon('@')
 	
 	def renderMap(self):
-		wasWall = False
-		length = 1
+		wasWall = True
+		length = 0
 		for y in range(self.map.height):
 			for x in range(self.map.width):
 				isWall = self.map.tiles[x][y].blocked
