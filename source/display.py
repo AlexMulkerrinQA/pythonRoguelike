@@ -25,7 +25,7 @@ class Render:
 			self.renderMap()
 			self.needRedraw = False
 		
-		setCursor(oldy, oldx)
+		setCursor(player.oldy, player.oldx)
 		setBgColour('black')
 		setFgColour('white')
 		echon('.')
