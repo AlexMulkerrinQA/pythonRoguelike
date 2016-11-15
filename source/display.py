@@ -25,11 +25,11 @@ class Render:
 			self.renderMap()
 			self.needRedraw = False
 		
-		setCursor(player.oldy, player.oldx)
+		setCursor(self.player.oldy, self.player.oldx)
 		setBgColour('black')
 		setFgColour('white')
 		echon('.')
-		setCursor(player.y,player.x)
+		setCursor(self.player.y,self.player.x)
 		setBgColour('black')
 		setFgColour('yellow')
 		echon('@')
