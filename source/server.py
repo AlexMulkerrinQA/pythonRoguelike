@@ -31,9 +31,11 @@ while True:
 	c.send('HTTP/1.0 200 OK\n')
 	c.send('Content-Type: text/html\n')
 	c.send('\n') # header and body should be separated by additional newline
+	c.send('<pre>')
 	c.send(send_map_data(map))
+	c.send('</pre>')
 	c.close()
-	
+s.close()
 
 	
 	
